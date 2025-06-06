@@ -9,17 +9,18 @@ This is a rock paper scissors game inspired by a minigame from Brain Age for the
 ## How to play
 
 The game chooses your opponent's pose and a condition you must meet.
+You will be given two (2) seconds to make the correct pose with your hand. The screen displays your current pose at the top for reference.
+You will play 5 rounds, at the end you will be given your score! One (1) point for every correct answer.
 
-Examples:
+### Examples:
 Rock | Win
-Correct answer: Scissors
+Your answer: Scissors
++1 point
 
 Paper | Lose
-Correct answer: Rock
+Your answer: Rock
++1 point
 
 Scissors | Tie
-Correct answer: Scissors
-
-You will be given two (2) seconds to make the correct pose with your hand. The screen displays your current pose at the top for reference.
-
-You will play 5 rounds, at the end you will be given your score! One (1) point for every correct answer.
+Your answer: Paper
++0 points
