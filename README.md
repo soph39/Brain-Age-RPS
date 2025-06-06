@@ -14,13 +14,19 @@ You will play 5 rounds, at the end you will be given your score! One (1) point f
 
 ### Examples:
 Rock | Win
-Your answer: Scissors 
+
+Your answer: Scissors
+
 +1 point
 
 Paper | Lose
+
 Your answer: Rock
+
 +1 point
 
 Scissors | Tie
+
 Your answer: Paper
+
 +0 points
