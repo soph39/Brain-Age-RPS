@@ -14,7 +14,7 @@ You will play 5 rounds, at the end you will be given your score! One (1) point f
 
 ### Examples:
 Rock | Win  
-Your answer: Scissors  
+Your answer: Paper  
 +1 point  
 
 Paper | Lose  
