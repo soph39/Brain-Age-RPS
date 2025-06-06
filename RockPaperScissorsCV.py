@@ -1,19 +1,28 @@
+'''
+Welcome to (placeholder title)!
+This is a rock paper scissors game based off a minigame from Brain Age for the Nintendo DS.
+I grew up with a hand-me-down DS from my cousin and Brain Age was one of my favorite games.
+I figured I'd try and recreate the rock paper scissors minigame but instead of saying rock
+paper or scissors, the player will simply make the pose with their hand.
+'''
+#Import libraries
 import cv2 as cv
 import mediapipe as mp
 
+#Declare and initialize variables
 mpDrawing = mp.solutions.drawing_utils
 mpDrawingStyles = mp.solutions.drawing_styles
 mpHands = mp.solutions.hands
-
 handPose = "waiting for hand..."
 
-
+#Determine hand pose based on the position of landmarks (tracking points) on the hand
 def getHandMove(hand_landmarks):
     landmarks = hand_landmarks.landmark
     if all([landmarks[i].y < landmarks[i+3].y for i in range (9, 20, 4)]): return "rock"
     elif all([landmarks[13].y < landmarks[16].y and landmarks[17].y < landmarks [20].y ]): return "scissors"
     else: return "paper"
 
+#Start video capture
 vid = cv.VideoCapture(0)
 
 with mpHands.Hands(model_complexity=0,
