@@ -52,7 +52,7 @@ with mpHands.Hands(model_complexity=0,
             handPose = getHandMove(handResult[0])
         else: handPose = "Waiting for hand..."
 
-        cv.putText(frame, f"Pose: {handPose}", (50,50), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
+        cv.putText(frame, f"Pose: {handPose}", (50,50), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 1, cv.LINE_AA)
 
         cv.imshow('frame', frame)
 
