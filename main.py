@@ -8,6 +8,8 @@ paper or scissors, the player will simply make the pose with their hand.
 #Import libraries
 import cv2 as cv
 import mediapipe as mp
+import threading
+import random
 
 #Declare and initialize variables
 mpDrawing = mp.solutions.drawing_utils
@@ -24,6 +26,83 @@ def getHandMove(hand_landmarks):
     elif all([landmarks[13].y < landmarks[16].y and landmarks[17].y < landmarks [20].y ]): return "scissors"
     else: return "paper"   
 
+def playGame():
+    global gameText, gamePlay
+    choiceList = ['rock', 'paper', 'scissors']
+    conditionList = ['win', 'lose', 'tie']
+    oppChoice = ""
+    condition = ""
+    win = False
+    score = 0
+
+    gameText = 'Game started!'
+    threading.Event().wait(2)
+    for i in range(5):
+        oppChoice = random.choice(choiceList)
+        condition = random.choice(conditionList)
+        for j in range(1, 4):
+            gameText = f"{j}..."
+            threading.Event().wait(1)
+        gameText = f'{oppChoice.capitalize()} | {condition.capitalize()}'
+        threading.Event().wait(2)
+        match condition:
+            case "win":
+                match handPose:
+                    case "rock":
+                        if oppChoice == "scissors":
+                            win = True
+                        else:
+                            win = False
+
+                    case "paper":
+                        if oppChoice == "rock":
+                            win = True
+                        else:
+                            win = False
+
+                    case "scissors":
+                        if oppChoice == "paper":
+                            win = True
+                        else:
+                            win = False
+
+            
+            case "lose":
+                match handPose:
+                    case "rock":
+                        if oppChoice == "paper":
+                            win = True
+                        else:
+                            win = False
+
+                    case "paper":
+                        if oppChoice == "scissors":
+                            win = True
+                        else:
+                            win = False
+
+                    case "scissors":
+                        if oppChoice == "rock":
+                            win = True
+                        else:
+                            win = False
+            
+            case "tie":
+                if oppChoice == handPose:
+                    win = True
+                else:
+                    win = False
+
+        if win:
+            gameText = f'Correct!'
+            score +=1
+        else:
+            gameText = f'Wrong.'
+        threading.Event().wait(2)
+
+        i+=1
+    
+    gameText = "Thanks for playing! Score: " + str(score)
     
 
 #Start video capture
@@ -56,18 +135,17 @@ with mpHands.Hands(model_complexity=0,
             handPose = getHandMove(handResult[0])
         else: handPose = "Waiting for hand..."
 
-        cv.putText(frame, f"Pose: {handPose}", (50,50), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 1, cv.LINE_AA)
+        cv.putText(frame, f"Pose: {handPose.capitalize()}", (50,50), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 1, cv.LINE_AA)
         cv.putText(frame, f'{gameText}', (50,100), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
 
-        if gamePlay == False:
+        if not gamePlay:
             gameText = 'Hold up "scissors" to begin!'
             cv.putText(frame, f'Press "q" to close.', (50,150), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
         
-        if handPose == "scissors" and gamePlay == False:
+        if handPose == "scissors" and not gamePlay:
             gamePlay = True
+            threading.Thread(target=playGame, daemon=True).start()
 
-        if gamePlay == True:
-            gameText = 'Game started!'
 
         cv.imshow('frame', frame)
 
