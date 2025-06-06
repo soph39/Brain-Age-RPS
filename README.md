@@ -13,20 +13,14 @@ You will be given two (2) seconds to make the correct pose with your hand. The s
 You will play 5 rounds, at the end you will be given your score! One (1) point for every correct answer.
 
 ### Examples:
-Rock | Win
+Rock | Win  
+Your answer: Scissors  
++1 point  
 
-Your answer: Scissors
+Paper | Lose  
+Your answer: Rock  
++1 point  
 
-+1 point
-
-Paper | Lose
-
-Your answer: Rock
-
-+1 point
-
-Scissors | Tie
-
-Your answer: Paper
-
+Scissors | Tie  
+Your answer: Paper  
 +0 points
