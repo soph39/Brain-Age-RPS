@@ -8,7 +8,7 @@ paper or scissors, the player will simply make the pose with their hand.
 Version: 0.1.0
 
 Note for dev (she is forgetful):
-Use pyinstaller --onefile --noconfirm --collect-submodules=mediapipe --collect-data=mediapipe main.py to compile
+Use pyinstaller --noconfirm --collect-submodules=mediapipe --collect-data=mediapipe main.py to compile
 '''
 #Import libraries
 import cv2 as cv
