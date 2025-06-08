@@ -4,6 +4,8 @@ This is a rock paper scissors game based off a minigame from Brain Age for the N
 I grew up with a hand-me-down DS from my cousin and Brain Age was one of my favorite games.
 I figured I'd try and recreate the rock paper scissors minigame but instead of saying rock
 paper or scissors, the player will simply make the pose with their hand.
+
+Version: 0.1.0
 '''
 #Import libraries
 import cv2 as cv
@@ -28,8 +30,8 @@ def getHandMove(hand_landmarks):
 
 def playGame():
     global gameText, gamePlay
-    choiceList = ['rock', 'paper', 'scissors']
-    conditionList = ['win', 'lose', 'tie']
+    choiceList = ["rock", "paper", "scissors"]
+    conditionList = ["win", "lose", "tie"]
     oppChoice = ""
     condition = ""
     win = False
