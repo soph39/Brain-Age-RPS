@@ -6,6 +6,9 @@ I figured I'd try and recreate the rock paper scissors minigame but instead of s
 paper or scissors, the player will simply make the pose with their hand.
 
 Version: 0.1.0
+
+Note for dev (she is forgetful):
+Use pyinstaller --onefile --noconfirm --collect-submodules=mediapipe --collect-data=mediapipe main.py to compile
 '''
 #Import libraries
 import cv2 as cv
@@ -20,6 +23,7 @@ mpHands = mp.solutions.hands
 handPose = "waiting for hand..."
 gamePlay = False
 gameText = ""
+gameFinish = False
 
 #Determine hand pose based on the position of landmarks (tracking points) on the hand
 def getHandMove(hand_landmarks):
@@ -105,6 +109,7 @@ def playGame():
         i+=1
     
     gameText = "Thanks for playing! Score: " + str(score)
+    gameFinish = True
     
 
 #Start video capture
@@ -139,20 +144,21 @@ with mpHands.Hands(model_complexity=0,
 
         cv.putText(frame, f"Pose: {handPose.capitalize()}", (50,50), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 1, cv.LINE_AA)
         cv.putText(frame, f'{gameText}', (50,100), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
+        cv.putText(frame, f'Press "q" to close.', (50,150), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
 
         if not gamePlay:
             gameText = 'Hold up "scissors" to begin!'
-            cv.putText(frame, f'Press "q" to close.', (50,150), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
         
         if handPose == "scissors" and not gamePlay:
             gamePlay = True
             threading.Thread(target=playGame, daemon=True).start()
+        
 
 
         cv.imshow('frame', frame)
 
-
         if cv.waitKey(1) & 0xFF == ord('q'): break
+
     
     vid.release()
     cv.destroyAllWindows()
