@@ -2,8 +2,6 @@
 Welcome to RPS Speed Trial!
 This is a rock paper scissors game inspired by a minigame from Brain Age for the Nintendo DS.
 
-Version: 0.1.0
-
 Note for dev (she is forgetful):
 Use pyinstaller --noconfirm --collect-submodules=mediapipe --collect-data=mediapipe main.py to compile
 '''
