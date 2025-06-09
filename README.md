@@ -1,7 +1,7 @@
 # RPS Speed Trial
 A rock paper scissors game inspired by Brain Age
 
-Note: Use Python 3.12! MediaPipe supports 3.9 - 3.12.  
+Note: Use Python 3.12! MediaPipe supports 3.9 - 3.12.
 Pose tracking based off Code Savant's rock paper scissors game: https://www.youtube.com/watch?v=5Hh7tOcgP0U
 
 This is a rock paper scissors game inspired by a minigame from Brain Age for the Nintendo DS. In Brain Age, players speak the correct answer into the microphone. In this game, players pose their hand to answer!

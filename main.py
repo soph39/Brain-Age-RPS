@@ -1,6 +1,6 @@
 '''
 Welcome to RPS Speed Trial!
-This is a rock paper scissors game based off a minigame from Brain Age for the Nintendo DS.
+This is a rock paper scissors game inspired by a minigame from Brain Age for the Nintendo DS.
 I grew up with a hand-me-down DS from my cousin and Brain Age was one of my favorite games.
 I figured I'd try and recreate the rock paper scissors minigame but instead of saying rock
 paper or scissors, the player will simply make the pose with their hand.
@@ -15,6 +15,7 @@ import cv2 as cv
 import mediapipe as mp
 import threading
 import random
+import time
 
 #Declare and initialize variables
 mpDrawing = mp.solutions.drawing_utils
@@ -23,7 +24,13 @@ mpHands = mp.solutions.hands
 handPose = "waiting for hand..."
 gamePlay = False
 gameText = ""
+gameText2 = ""
 gameFinish = False
+timeStore = 0.0
+cameraOption = 0
+
+#Start video capture
+vid = cv.VideoCapture(cameraOption)
 
 #Determine hand pose based on the position of landmarks (tracking points) on the hand
 def getHandMove(hand_landmarks):
@@ -33,13 +40,15 @@ def getHandMove(hand_landmarks):
     else: return "paper"   
 
 def playGame():
-    global gameText, gamePlay
+    global gameText, gamePlay, gameText2
     choiceList = ["rock", "paper", "scissors"]
     conditionList = ["win", "lose", "tie"]
     oppChoice = ""
     condition = ""
     win = False
     score = 0
+    scoreStore = 0
+    gamePlay = True
 
     gameText = 'Game started!'
     threading.Event().wait(2)
@@ -50,70 +59,68 @@ def playGame():
             gameText = f"{j}..."
             threading.Event().wait(1)
         gameText = f'{oppChoice.capitalize()} | {condition.capitalize()}'
-        threading.Event().wait(2)
-        match condition:
-            case "win":
-                match handPose:
-                    case "rock":
-                        if oppChoice == "scissors":
-                            win = True
-                        else:
-                            win = False
+        win = False
+        gameText2 = "Waiting..."
+        timeStore = time.time()
+        while win == False:
+            time.sleep(0.001)
+            match condition:
+                case "win":
+                    match handPose:
+                        case "rock":
+                            if oppChoice == "scissors":
+                                win = True
+                            else:  
+                                win = False
 
-                    case "paper":
-                        if oppChoice == "rock":
-                            win = True
-                        else:
-                            win = False
+                        case "paper":
+                            if oppChoice == "rock":
+                                win = True
+                            else:
+                                win = False
 
-                    case "scissors":
-                        if oppChoice == "paper":
-                            win = True
-                        else:
-                            win = False
+                        case "scissors":
+                            if oppChoice == "paper":
+                                win = True
+                            else:
+                                win = False
 
             
-            case "lose":
-                match handPose:
-                    case "rock":
-                        if oppChoice == "paper":
-                            win = True
-                        else:
-                            win = False
+                case "lose":
+                    match handPose:
+                        case "rock":
+                            if oppChoice == "paper":
+                                win = True
+                            else:
+                                win = False
 
-                    case "paper":
-                        if oppChoice == "scissors":
-                            win = True
-                        else:
-                            win = False
+                        case "paper":
+                            if oppChoice == "scissors":
+                                win = True
+                            else:
+                                win = False
 
-                    case "scissors":
-                        if oppChoice == "rock":
-                            win = True
-                        else:
-                            win = False
+                        case "scissors":
+                            if oppChoice == "rock":
+                                win = True
+                            else:
+                                win = False
             
-            case "tie":
-                if oppChoice == handPose:
-                    win = True
-                else:
-                    win = False
-
-        if win:
-            gameText = f'Correct!'
-            score +=1
+                case "tie":
+                    if oppChoice == handPose:
+                        win = True
+                    else:
+                        win = False
         else:
-            gameText = f'Wrong.'
-        threading.Event().wait(2)
-
+            scoreStore = float(time.time()) - float(timeStore)
+            score += scoreStore
+            gameText2 = "Correct! Seconds: " + str("%.4f" % round(scoreStore, 4))
+            gameStart = False
+        threading.Event().wait(1)
         i+=1
     
-    gameText = "Thanks for playing! Score: " + str(score)
-    gameFinish = True
-    
-
-#Start video capture
-vid = cv.VideoCapture(0)
+    gameText = "Done! Total seconds: " + str("%.4f" % round(score, 4))
+    gameText2 = 'Press "q" to close.'
 
 with mpHands.Hands(model_complexity=0,
                    min_detection_confidence=0.5,
@@ -144,17 +151,16 @@ with mpHands.Hands(model_complexity=0,
 
         cv.putText(frame, f"Pose: {handPose.capitalize()}", (50,50), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 1, cv.LINE_AA)
         cv.putText(frame, f'{gameText}', (50,100), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
-        cv.putText(frame, f'Press "q" to close.', (50,150), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
+        cv.putText(frame, f'{gameText2}', (50,150), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
 
         if not gamePlay:
             gameText = 'Hold up "scissors" to begin!'
+            cv.putText(frame, f'Press SPACE to change camera.', (50,200), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
+            cv.putText(frame, f'Press "q" to close.', (50,150), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2, cv.LINE_AA)
         
         if handPose == "scissors" and not gamePlay:
-            gamePlay = True
             threading.Thread(target=playGame, daemon=True).start()
         
-
-
         cv.imshow('frame', frame)
 
         if cv.waitKey(1) & 0xFF == ord('q'): break
