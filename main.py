@@ -1,9 +1,6 @@
 '''
 Welcome to RPS Speed Trial!
 This is a rock paper scissors game inspired by a minigame from Brain Age for the Nintendo DS.
-I grew up with a hand-me-down DS from my cousin and Brain Age was one of my favorite games.
-I figured I'd try and recreate the rock paper scissors minigame but instead of saying rock
-paper or scissors, the player will simply make the pose with their hand.
 
 Version: 0.1.0
 
