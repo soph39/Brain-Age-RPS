@@ -10,7 +10,7 @@ This is a rock paper scissors game inspired by a minigame from Brain Age for the
 
 The game chooses your opponent's pose and a condition you must meet.
 You will be timed on how fast it takes to make the correct pose with your hand. The screen displays your current pose at the top for reference.
-You will play 5 rounds, at the end you will be given a total from each round!
+You will play 5 rounds, at the end of each round you will be told how long it took to make the correct pose. At the end of the game, you will be given a total time from all rounds!
 
 ### Examples:
 Rock | Win  
